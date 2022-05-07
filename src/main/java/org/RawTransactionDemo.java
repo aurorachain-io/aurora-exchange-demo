@@ -20,9 +20,10 @@ public class RawTransactionDemo {
     private final static String testPrivateKey = "b968d08d67b3664bebd6b11b517557a29186e3c5f8474959d5db7cc0442b1831";
 
     public static void main(String[] args) {
-        String to = "AOA8ea2354ba012628dd1dad9e44500a70075664a16202cb962ac59075b964b07152d234b70";
+        String to = "AOAd9f5038ca3908212d5a13c3b48a4df7c1dfd5a54";
+        BigInteger nonce = BigInteger.valueOf(0);
         System.out.println(to.length());
-        String result = RawTransactionDemo.signAOATransaction(testAddress, to, testPrivateKey, BigInteger.ONE, "0.1");
+        String result = RawTransactionDemo.signAOATransaction(testAddress, to, testPrivateKey, nonce, "0.01");
         System.out.println(result);
     }
 
@@ -46,7 +47,8 @@ public class RawTransactionDemo {
 
         RawTransaction rawTransaction = RawTransaction.createAOATransaction(fromAddressNonce, gasPrice, gas, to, value);
 
-        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, ChainId.MAINNET, credentials);
+        byte chainId = 2;
+        byte[] signedMessage = TransactionEncoder.signMessage(rawTransaction, chainId, credentials);
         return Numeric.toHexString(signedMessage);
 
 //        AOASendTransaction aoaSendTransaction = web3j.aoaSendRawTransaction(hexValue).sendAsync().get();
