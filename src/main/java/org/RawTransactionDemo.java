@@ -2,14 +2,17 @@ package org;
 
 import com.aoa.web3j.core.tx.ChainId;
 import com.aoa.web3j.core.utils.AOAGas;
-import com.aoa.web3j.crypto.Credentials;
-import com.aoa.web3j.crypto.RawTransaction;
-import com.aoa.web3j.crypto.TransactionDecoder;
-import com.aoa.web3j.crypto.TransactionEncoder;
+import com.aoa.web3j.crypto.*;
+import com.aoa.web3j.rlp.RlpDecoder;
+import com.aoa.web3j.rlp.RlpList;
+import com.aoa.web3j.rlp.RlpString;
+import com.aoa.web3j.rlp.RlpType;
 import com.aoa.web3j.utils.Convert;
 import com.aoa.web3j.utils.Numeric;
 
 import java.math.BigInteger;
+import java.security.SignatureException;
+import java.util.List;
 
 /**
  * @author yujian    2020/05/22 离线签名交易相关demo
@@ -85,5 +88,24 @@ public class RawTransactionDemo {
      */
     public static RawTransaction decodeRawSign(String hexValue) {
         return TransactionDecoder.decode(hexValue);
+    }
+    
+    public static void decodeMessageV340(String signedData) {
+        System.out.println("解密 start " + System.currentTimeMillis());
+        RawTransaction rawTransaction = TransactionDecoder.decode(signedData);
+        rawTransaction.setAbi("");
+        rawTransaction.setAsset("");
+        String to = rawTransaction.getTo();
+        String aoa = to.replaceFirst("0x", "AOA");
+        rawTransaction.setTo(aoa);
+        if (rawTransaction instanceof SignedRawTransaction) {
+            try {
+                String from = ((SignedRawTransaction) rawTransaction).getFrom();
+                System.out.println("address " + from);
+            } catch (SignatureException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("解密 end " + System.currentTimeMillis());
     }
 }
