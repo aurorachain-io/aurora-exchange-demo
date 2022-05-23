@@ -91,7 +91,7 @@ public class RawTransactionDemo {
     }
     
     public static void decodeMessageV340(String signedData) {
-        System.out.println("解密 start " + System.currentTimeMillis());
+        System.out.println("decode start " + System.currentTimeMillis());
         RawTransaction rawTransaction = TransactionDecoder.decode(signedData);
         rawTransaction.setAbi("");
         rawTransaction.setAsset("");
@@ -106,6 +106,6 @@ public class RawTransactionDemo {
                 e.printStackTrace();
             }
         }
-        System.out.println("解密 end " + System.currentTimeMillis());
+        System.out.println("docode end " + System.currentTimeMillis());
     }
 }
